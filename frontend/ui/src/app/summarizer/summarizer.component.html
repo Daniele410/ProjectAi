@@ -1,0 +1,11 @@
+<div class="container">
+  <h2>Riassuntore AI 📚</h2>
+  <textarea [(ngModel)]="articleText" rows="10" placeholder="Incolla qui l'articolo..."></textarea>
+  <button (click)="getSummary()">Riassumi</button>
+
+  <div *ngIf="summary">
+    <h3>Riassunto:</h2>
+      <p>{{summary}}</p>
+  </div>
+</div>
+
