@@ -1,11 +1,19 @@
-<div class="container">
-  <h2>Riassuntore AI 📚</h2>
-  <textarea [(ngModel)]="articleText" rows="10" placeholder="Incolla qui l'articolo..."></textarea>
-  <button (click)="getSummary()">Riassumi</button>
+<div class="summarizer-container">
+  <h2>Riassuntore Articoli con AI</h2>
 
-  <div *ngIf="summary">
-    <h3>Riassunto:</h2>
-      <p>{{summary}}</p>
+  <textarea [(ngModel)]="text"
+            placeholder="Incolla qui l'articolo da riassumere"
+            rows="10">
+  </textarea>
+
+  <button (click)="summarize()" [disabled]="loading || !text">
+    {{ loading ? 'Riassumendo...' : 'Riassumi con AI' }}
+  </button>
+
+  <div *ngIf="error" class="error-message">{{ error }}</div>
+
+  <div *ngIf="summary" class="summary-result">
+    <h3>Riassunto Generato:</h3>
+    <p>{{summary}}</p>
   </div>
 </div>
-

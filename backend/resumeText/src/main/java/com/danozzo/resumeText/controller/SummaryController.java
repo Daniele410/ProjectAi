@@ -11,14 +11,17 @@ import java.util.Map;
 @CrossOrigin(origins = "http://localhost:4200")
 public class SummaryController {
 
+    private SummaryService summaryService;
 
     @Autowired
-    private SummaryService summaryService;
+    public SummaryService getSummaryService(SummaryService summaryService) {
+        return summaryService;
+    }
 
     @PostMapping("/summarize")
     public Map<String, String> summarize(@RequestBody Map<String,String> request){
         String text = request.get("text");
         String summary = summaryService.summarizeText(text);
-        return Collections.singletonMap("Summary: ", summary);
+        return Collections.singletonMap("summary", summary);
     }
 }
