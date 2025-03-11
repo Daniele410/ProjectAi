@@ -11,11 +11,11 @@ import java.util.Map;
 @CrossOrigin(origins = "http://localhost:4200")
 public class SummaryController {
 
-    private SummaryService summaryService;
+    SummaryService summaryService;
 
     @Autowired
-    public SummaryService getSummaryService(SummaryService summaryService) {
-        return summaryService;
+    public SummaryController(SummaryService summaryService) {
+        this.summaryService = summaryService;
     }
 
     @PostMapping("/summarize")
