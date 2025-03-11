@@ -1,6 +1,8 @@
 package com.danozzo.resumeText.service;
 
+
 import com.fasterxml.jackson.databind.JsonNode;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -14,32 +16,34 @@ import java.util.Map;
 public class SummaryService {
 
     private static final String OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
-    @Value("${APIKEY}")
-    private String APIKEY;
     private static final String MODEL = "gpt-3.5-turbo";
+    private WebClient webClient;
 
-    private final WebClient webClient = WebClient.builder()
-            .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + APIKEY)
-            .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-            .build();
+    @Value("${API_KEY}")
+    private String APIKEY;
+
+    @PostConstruct
+    public void init() {
+        webClient = WebClient.builder()
+                .baseUrl(OPENAI_API_URL)
+                .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + "" + APIKEY)
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .build();
+    }
 
     public String summarizeText(String text) {
-        String prompt = "Riassumi brevemente questo testo: " + text;
-
         Map<String, Object> requestBody = Map.of(
                 "model", MODEL,
-                "messages", List.of(Map.of("role", "user", "content", prompt)),
-                "max_tokens", 150
+                "messages", List.of(Map.of("role", "user", "content", "Riassumi brevemente questo testo:\n" + text)),
+                "max_tokens", 500,
+                "temperature", 0.5
         );
 
-        String response = webClient.post()
-                .uri(OPENAI_API_URL)
+        return webClient.post()
                 .bodyValue(requestBody)
                 .retrieve()
                 .bodyToMono(JsonNode.class)
-                .block()
-                .get("choices").get(0).get("message").get("content").asText();
-        return response;
+                .map(response -> response.get("choices").get(0).get("message").get("content").asText())
+                .block();
     }
-
 }
