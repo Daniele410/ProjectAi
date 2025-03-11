@@ -20,13 +20,13 @@ public class SummaryService {
     private WebClient webClient;
 
     @Value("${API_KEY}")
-    private String APIKEY;
+    private String apiKey;
 
     @PostConstruct
     public void init() {
         webClient = WebClient.builder()
                 .baseUrl(OPENAI_API_URL)
-                .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + "" + APIKEY)
+                .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + "" + apiKey)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
     }
