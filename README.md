@@ -138,4 +138,10 @@ Click **Send** and check the response in the **Response** section.
 
 ---
 
+## License
+
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+
+---
+
 Enjoy your fully functional and scalable AI summarizer application! 🚀
