@@ -25,8 +25,8 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Debug - Verifica struttura file
-        run: ls -la backend/resumeText
+      - name: Debug - Verify backend structure
+        run: ls -la backend/resumeText || true
 
       - name: Cache Maven Dependencies
         uses: actions/cache@v3
@@ -40,6 +40,10 @@ jobs:
 
       - name: Run Tests
         run: mvn -f backend/resumeText/pom.xml test
+
+      - name: Debug - Print test reports if failed
+        if: failure()
+        run: cat backend/resumeText/target/surefire-reports/*.txt || true
 
   build-frontend:
     name: Build Frontend
@@ -58,6 +62,21 @@ jobs:
       - name: Install Dependencies
         run: npm install
         working-directory: frontend/ui
+
+      - name: Debug - Verify frontend structure
+        run: ls -la frontend/ui || true
+
+      - name: Run Linter
+        run: npm run lint
+        working-directory: frontend/ui
+
+      - name: Run Tests
+        run: npm run test -- --watch=false --browsers=ChromeHeadless
+        working-directory: frontend/ui
+
+      - name: Debug - Print test results if failed
+        if: failure()
+        run: cat frontend/ui/coverage/lcov-report/index.html || true
 
       - name: Build Frontend
         run: npm run build
