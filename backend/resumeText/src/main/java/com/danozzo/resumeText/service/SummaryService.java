@@ -1,7 +1,6 @@
 package com.danozzo.resumeText.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -19,10 +18,6 @@ public class SummaryService {
 
     // Inject the WebClient bean
     private final WebClient webClient;
-
-    // Read the API key from the application.properties file
-    @Value("${API_KEY}")
-    private String apiKey;
 
     // Inject the WebClient bean
     public SummaryService(WebClient webClient) {
