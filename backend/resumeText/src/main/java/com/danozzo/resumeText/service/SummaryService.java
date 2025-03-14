@@ -11,19 +11,25 @@ import java.util.Map;
 @Service
 public class SummaryService {
 
+    // The model to be used for summarization
     private static final String MODEL = "gpt-3.5-turbo";
+
+    // The prompt to be prepended to the text to be summarized
     private static final String PROMPT = "Riassumi brevemente questo testo:\n";
+
+    // Inject the WebClient bean
     private final WebClient webClient;
 
-    // ✅ Usa @Value per ottenere la chiave API
+    // Read the API key from the application.properties file
     @Value("${API_KEY}")
     private String apiKey;
 
-    // ✅ Riceve il WebClient configurato come bean da Spring
+    // Inject the WebClient bean
     public SummaryService(WebClient webClient) {
         this.webClient = webClient;
     }
 
+    // Send a POST request to the OpenAI API to summarize the text
     public String summarizeText(String text) {
         Map<String, Object> requestBody = Map.of(
                 "model", MODEL,
