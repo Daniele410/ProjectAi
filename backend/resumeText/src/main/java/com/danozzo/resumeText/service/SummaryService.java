@@ -14,7 +14,8 @@ public class SummaryService {
     private static final String MODEL = "gpt-3.5-turbo";
 
     // The prompt to be prepended to the text to be summarized
-    private static final String PROMPT = "Riassumi brevemente questo testo:\n";
+    private static final String PROMPT = "Riassumi il seguente testo mantenendo la sua lingua originale. Non tradurre il riassunto in " +
+            "italiano o in qualsiasi altra lingua. Usa esattamente la stessa lingua del testo fornito.:\n";
 
     // Inject the WebClient bean
     private final WebClient webClient;
